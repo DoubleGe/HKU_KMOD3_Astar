@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
 
         if(vert != 0 || hor != 0)
         {
-            targetPos += (Vector3.forward * vert + hor * Vector3.right).normalized * moveSpeed;
+            targetPos += (Vector3.forward * vert + hor * Vector3.right).normalized * moveSpeed * Time.deltaTime;
         }
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
