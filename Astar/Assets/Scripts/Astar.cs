@@ -55,7 +55,7 @@ public class Astar
                 if (neighbour.gridPosition.x > currentNode.position.x && neighbour.HasWall(Wall.LEFT)) continue;
                 if(neighbour.gridPosition.x < currentNode.position.x && neighbour.HasWall(Wall.RIGHT)) continue;   
                 
-                int newGCost = currentNode.GCost + CalculateDistance(currentNode.position, neighbour.gridPosition);
+                int newGCost = currentNode.GCost + CalculateDistance(currentNode.position, neighbour.gridPosition, neighbour.pathfindingPenalty);
 
                 if (nodePositions.ContainsKey(neighbour.gridPosition))
                 {
@@ -64,12 +64,12 @@ public class Astar
                     {
                         neighbourNode.parent = currentNode;
                         neighbourNode.GCost = newGCost;
-                        neighbourNode.HCost = CalculateDistance(neighbourNode.position, endPos);
+                        neighbourNode.HCost = CalculateDistance(neighbourNode.position, endPos, neighbour.pathfindingPenalty);
                     }
                 }
                 else
                 {
-                    Node neighbourNode = new Node(neighbour.gridPosition, currentNode, neighbour, newGCost, CalculateDistance(currentNode.position, neighbour.gridPosition));
+                    Node neighbourNode = new Node(neighbour.gridPosition, currentNode, neighbour, newGCost, CalculateDistance(currentNode.position, neighbour.gridPosition, neighbour.pathfindingPenalty));
                     nodePositions.Add(neighbour.gridPosition, neighbourNode);
                     openList.Add(neighbourNode);
                 }
@@ -98,12 +98,14 @@ public class Astar
         return nodeList.RemoveFirst();
     }
 
-    private int CalculateDistance(Vector2Int start, Vector2Int end)
+    private int CalculateDistance(Vector2Int start, Vector2Int end, int penalty = 0)
     {
+        penalty = penalty * 5 + 1;
+
         int xDistance = Mathf.Abs(start.x - end.x);
         int yDistance = Mathf.Abs(start.y - end.y);
         int remaining = Mathf.Abs(xDistance - yDistance);
-        return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining;
+        return (MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining) * penalty;
     }
 
     /// <summary>

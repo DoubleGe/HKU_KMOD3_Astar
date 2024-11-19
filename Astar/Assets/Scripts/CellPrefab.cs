@@ -5,6 +5,8 @@ using UnityEngine;
 public class CellPrefab : MonoBehaviour
 {
     public GameObject WallPrefab;
+
+    [SerializeField] private Material expensiveMaterial;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,5 +19,8 @@ public class CellPrefab : MonoBehaviour
         if (cell.HasWall(Wall.UP)) { Instantiate(WallPrefab, transform.position, Quaternion.LookRotation(new Vector3(0,0,1)), transform); }
         if (cell.HasWall(Wall.LEFT)) { Instantiate(WallPrefab, transform.position, Quaternion.LookRotation(new Vector3(-1,0,0)), transform); }
         if (cell.HasWall(Wall.RIGHT))  { Instantiate(WallPrefab, transform.position, Quaternion.LookRotation(new Vector3(1,0,0)), transform); }
+
+        Debug.Log(cell.pathfindingPenalty);
+        if(cell.pathfindingPenalty > 0) GetComponentInChildren<MeshRenderer>().material = expensiveMaterial;
     }
 }

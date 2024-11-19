@@ -6,6 +6,7 @@ public class Cell
 {
     public Vector2Int gridPosition;
     public Wall walls; //bit Encoded
+    public int pathfindingPenalty = 0;
     public void RemoveWall(Wall wallToRemove)
     {
         walls = (walls & ~wallToRemove);

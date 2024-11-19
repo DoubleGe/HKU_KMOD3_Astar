@@ -52,6 +52,7 @@ public class MazeGeneration : MonoBehaviour
                 grid[x, y] = new Cell();
                 grid[x, y].gridPosition = new Vector2Int(x, y);
                 grid[x, y].walls = Wall.DOWN | Wall.LEFT | Wall.RIGHT | Wall.UP;
+                grid[x, y].pathfindingPenalty = Mathf.Clamp(Random.Range(0, 10) - 7, 0, 1);
             }
         }
 
